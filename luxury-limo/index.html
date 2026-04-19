@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luxury Limo - Premium Chauffeur Experience</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --black: #0a0a0a; --charcoal: #1a1a1a; --dark-gray: #2a2a2a; --gold: #c9a962; --gold-light: #e8d5a3; --white: #f5f5f5; --soft-white: #e0e0e0; }
+    html.lenis { height: auto; }
+    .lenis.lenis-smooth { scroll-behavior: auto; }
+    .lenis.lenis-stopped { overflow: hidden; }
+    body { font-family: 'Montserrat', sans-serif; background: var(--black); color: var(--white); overflow-x: hidden; }
+    ::selection { background: var(--gold); color: var(--black); }
+    .cursor { position: fixed; width: 20px; height: 20px; border: 1px solid var(--gold); border-radius: 50%; pointer-events: none; z-index: 10001; transform: translate(-50%, -50%); transition: width 0.3s, height 0.3s, background 0.3s; mix-blend-mode: difference; }
+    .cursor.hovered { width: 40px; height: 40px; background: rgba(201, 169, 98, 0.2); }
+    .header { position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; padding: 20px 50px; display: flex; justify-content: space-between; align-items: center; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+    .header.scrolled { background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(20px); padding: 15px 50px; border-bottom: 1px solid rgba(201, 169, 98, 0.2); }
+    .logo { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 600; color: var(--gold); text-decoration: none; opacity: 0; transform: translateY(-20px); transition: all 0.6s ease; text-shadow: 0 0 20px rgba(201, 169, 98, 0.5); }
+    .header.scrolled .logo { opacity: 1; transform: translateY(0); }
+    .nav-menu { display: flex; gap: 40px; list-style: none; }
+    .nav-menu li a { color: var(--soft-white); text-decoration: none; font-size: 13px; font-weight: 400; letter-spacing: 2px; text-transform: uppercase; position: relative; padding: 5px 0; transition: color 0.3s ease; }
+    .nav-menu li a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px; background: var(--gold); transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+    .nav-menu li a:hover { color: var(--gold); }
+    .nav-menu li a:hover::after { width: 100%; }
+    section { position: relative; min-height: 100vh; overflow: hidden; }
+    .hero { height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--black) 0%, var(--charcoal) 100%); position: relative; }
+    .hero-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; z-index: 0; }
+    .hero-particle { position: absolute; width: 2px; height: 2px; background: var(--gold); border-radius: 50%; opacity: 0.6; animation: float 20s infinite; }
+    @keyframes float { 0%, 100% { transform: translateY(100vh) rotate(0deg); opacity: 0; } 10% { opacity: 0.6; } 90% { opacity: 0.6; } 100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; } }
+    .hero-content { position: relative; z-index: 2; text-align: center; padding: 0 20px; }
+    .hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(48px, 8vw, 120px); font-weight: 300; line-height: 1; margin-bottom: 20px; opacity: 0; }
+    .hero-title span { display: inline-block; opacity: 0; transform: translateY(50px); }
+    .hero-subtitle { font-size: 16px; font-weight: 300; letter-spacing: 8px; text-transform: uppercase; color: var(--gold); margin-bottom: 40px; opacity: 0; transform: translateY(30px); }
+    .hero-cta { display: inline-block; padding: 18px 50px; border: 1px solid var(--gold); color: var(--gold); text-decoration: none; font-size: 13px; font-weight: 500; letter-spacing: 3px; text-transform: uppercase; position: relative; overflow: hidden; transition: all 0.4s ease; opacity: 0; transform: translateY(30px); }
+    .hero-cta::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: var(--gold); transition: left 0.4s ease; z-index: -1; }
+    .hero-cta:hover { color: var(--black); }
+    .hero-cta:hover::before { left: 0; }
+    .hero-car-container { position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 80%; max-width: 1200px; height: 60%; z-index: 1; }
+    .hero-car { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 30px 60px rgba(0,0,0,0.8)); transition: transform 0.1s ease-out; }
+    .about { display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; background: var(--charcoal); }
+    .about-image { position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    .about-image img { width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.2); transition: all 1s ease; }
+    .about-image.revealed img { opacity: 1; transform: scale(1); }
+    .about-content { padding: 100px 80px; display: flex; flex-direction: column; justify-content: center; background: linear-gradient(135deg, var(--charcoal) 0%, var(--black) 100%); }
+    .section-label { font-size: 12px; font-weight: 500; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
+    .about-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(36px, 4vw, 56px); font-weight: 400; line-height: 1.2; margin-bottom: 30px; }
+    .about-text { font-size: 16px; font-weight: 300; line-height: 1.8; color: var(--soft-white); margin-bottom: 40px; }
+    .wedding { min-height: 100vh; background: linear-gradient(135deg, #1a1510 0%, #2a2015 50%, #1a1510 100%); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+    .wedding-petals { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+    .petal { position: absolute; width: 15px; height: 15px; background: radial-gradient(ellipse at center, rgba(255, 182, 193, 0.8) 0%, transparent 70%); border-radius: 0 50% 50% 50%; animation: petalFall 15s infinite linear; }
+    @keyframes petalFall { 0% { transform: translateY(-100px) rotate(0deg); opacity: 0; } 10% { opacity: 1; } 100% { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
+    .wedding-content { position: relative; z-index: 2; text-align: center; padding: 0 20px; }
+    .wedding-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(48px, 6vw, 80px); font-weight: 300; color: var(--gold-light); margin-bottom: 20px; }
+    .wedding-icon { font-size: 60px; margin-bottom: 30px; display: block; }
+    .wedding-text { font-size: 18px; font-weight: 300; line-height: 1.8; max-width: 600px; margin: 0 auto; color: var(--soft-white); }
+    .services { min-height: 100vh; padding: 120px 50px; background: var(--black); position: relative; }
+    .services-header { text-align: center; margin-bottom: 80px; }
+    .services-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(36px, 5vw, 64px); font-weight: 400; margin-bottom: 20px; }
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; max-width: 1400px; margin: 0 auto; }
+    .service-card { background: linear-gradient(135deg, var(--charcoal) 0%, var(--dark-gray) 100%); padding: 50px 40px; border: 1px solid rgba(201, 169, 98, 0.1); transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); opacity: 0; transform: translateY(50px); }
+    .service-card:hover { transform: translateY(-10px); border-color: var(--gold); box-shadow: 0 30px 60px rgba(201, 169, 98, 0.15); }
+    .service-icon { font-size: 40px; margin-bottom: 25px; display: block; }
+    .service-title { font-family: 'Cormorant Garamond', serif; font-size: 24px; font-weight: 500; margin-bottom: 15px; color: var(--gold); }
+    .service-description { font-size: 14px; font-weight: 300; line-height: 1.8; color: var(--soft-white); }
+    .experience-3d { min-height: 100vh; background: var(--black); position: relative; overflow: hidden; }
+    #webgl-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
+    .experience-overlay { position: absolute; top: 50%; left: 50px; transform: translateY(-50%); z-index: 2; max-width: 400px; }
+    .experience-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(36px, 4vw, 56px); font-weight: 400; margin-bottom: 20px; }
+    .experience-text { font-size: 16px; font-weight: 300; line-height: 1.8; color: var(--soft-white); }
+    .airport { min-height: 100vh; background: linear-gradient(180deg, #0a0a1a 0%, #1a1a2e 50%, #0a0a1a 100%); display: flex; align-items: center; position: relative; overflow: hidden; }
+    .airport-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(90deg, transparent, transparent 100px, rgba(201, 169, 98, 0.03) 100px, rgba(201, 169, 98, 0.03) 101px); animation: runwayMove 30s linear infinite; }
+    @keyframes runwayMove { 0% { transform: translateX(0); } 100% { transform: translateX(101px); } }
+    .airport-content { position: relative; z-index: 2; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; max-width: 1400px; margin: 0 auto; padding: 0 50px; align-items: center; }
+    .airport-text-block h2 { font-family: 'Cormorant Garamond', serif; font-size: clamp(36px, 4vw, 56px); font-weight: 400; margin-bottom: 30px; }
+    .airport-text-block p { font-size: 16px; font-weight: 300; line-height: 1.8; color: var(--soft-white); }
+    .airport-image { position: relative; height: 400px; overflow: hidden; }
+    .airport-image img { width: 100%; height: 100%; object-fit: cover; }
+    .faq { min-height: 100vh; padding: 120px 50px; background: var(--charcoal); position: relative; }
+    .faq-header { text-align: center; margin-bottom: 80px; }
+    .faq-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(36px, 5vw, 64px); font-weight: 400; }
+    .faq-container { max-width: 800px; margin: 0 auto; }
+    .faq-item { border-bottom: 1px solid rgba(201, 169, 98, 0.2); margin-bottom: 20px; }
+    .faq-question { padding: 25px 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s ease; }
+    .faq-question:hover { color: var(--gold); }
+    .faq-question h3 { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 400; }
+    .faq-icon { font-size: 24px; transition: transform 0.3s ease; }
+    .faq-item.active .faq-icon { transform: rotate(45deg); }
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+    .faq-item.active .faq-answer { max-height: 300px; }
+    .faq-answer p { padding-bottom: 25px; font-size: 15px; font-weight: 300; line-height: 1.8; color: var(--soft-white); }
+    .gallery { min-height: 100vh; padding: 120px 50px; background: var(--black); }
+    .gallery-header { text-align: center; margin-bottom: 80px; }
+    .gallery-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(36px, 5vw, 64px); font-weight: 400; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 1400px; margin: 0 auto; }
+    .gallery-item { position: relative; overflow: hidden; aspect-ratio: 4/3; cursor: pointer; }
+    .gallery-item:nth-child(2), .gallery-item:nth-child(5) { grid-row: span 2; aspect-ratio: 3/4; }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+    .gallery-item:hover img { transform: scale(1.1); }
+    .gallery-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); opacity: 0; transition: opacity 0.4s ease; display: flex; align-items: center; justify-content: center; }
+    .gallery-item:hover .gallery-overlay { opacity: 1; }
+    .gallery-overlay span { font-family: 'Cormorant Garamond', serif; font-size: 24px; color: var(--gold); }
+    .testimonials { min-height: 100vh; padding: 120px 50px; background: linear-gradient(135deg, var(--charcoal) 0%, var(--black) 100%); display: flex; align-items: center; position: relative; overflow: hidden; }
+    .testimonials-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 50%, rgba(201, 169, 98, 0.05) 0%, transparent 70%); animation: pulse 10s ease-in-out infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+    .testimonials-content { position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; width: 100%; }
+    .testimonials-header { text-align: center; margin-bottom: 80px; }
+    .testimonials-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(36px, 5vw, 64px); font-weight: 400; }
+    .testimonials-carousel { display: flex; gap: 30px; overflow: hidden; }
+    .testimonial-card { min-width: 400px; background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); padding: 50px 40px; border-radius: 20px; }
+    .testimonial-stars { color: var(--gold); font-size: 20px; margin-bottom: 20px; }
+    .testimonial-text { font-size: 18px; font-weight: 300; line-height: 1.8; font-style: italic; margin-bottom: 30px; color: var(--soft-white); }
+    .testimonial-author { display: flex; align-items: center; gap: 15px; }
+    .testimonial-avatar { width: 50px; height: 50px; border-radius: 50%; background: var(--gold); }
+    .testimonial-name { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 500; }
+    .why-choose { min-height: 100vh; padding: 120px 50px; background: var(--black); position: relative; overflow: hidden; }
+    .why-choose-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, rgba(201, 169, 98, 0.08) 0%, transparent 70%); animation: zoomBg 20s ease-in-out infinite; }
+    @keyframes zoomBg { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+    .why-choose-header { text-align: center; margin-bottom: 80px; position: relative; z-index: 2; }
+    .why-choose-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(36px, 5vw, 64px); font-weight: 400; }
+    .why-choose-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; max-width: 1200px; margin: 0 auto; position: relative; z-index: 2; }
+    .why-item { text-align: center; padding: 40px; }
+    .why-icon { font-size: 50px; margin-bottom: 25px; display: block; color: var(--gold); }
+    .why-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 500; margin-bottom: 15px; }
+    .why-text { font-size: 15px; font-weight: 300; line-height: 1.8; color: var(--soft-white); }
+    .vision-mission { min-height: 100vh; background: var(--charcoal); display: grid; grid-template-columns: 1fr 1fr; }
+    .vision-section, .mission-section { padding: 100px 80px; display: flex; flex-direction: column; justify-content: center; position: relative; }
+    .vision-section { background: linear-gradient(135deg, var(--charcoal) 0%, var(--black) 100%); }
+    .mission-section { background: linear-gradient(135deg, var(--black) 0%, var(--dark-gray) 100%); }
+    .vm-label { font-size: 12px; font-weight: 500; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
+    .vm-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(32px, 4vw, 48px); font-weight: 400; margin-bottom: 30px; }
+    .vm-text { font-size: 16px; font-weight: 300; line-height: 1.8; color: var(--soft-white); }
+    .vm-particles { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+    .vm-particle { position: absolute; width: 3px; height: 3px; background: var(--gold); border-radius: 50%; opacity: 0.4; animation: vmFloat 15s infinite; }
+    @keyframes vmFloat { 0%, 100% { transform: translateY(0) translateX(0); opacity: 0; } 20% { opacity: 0.4; } 80% { opacity: 0.4; } 100% { transform: translateY(-100px) translateX(50px); opacity: 0; } }
+    .footer { min-height: 60vh; background: linear-gradient(180deg, var(--black) 0%, #050505 100%); padding: 100px 50px 50px; position: relative; overflow: hidden; }
+    .footer-gradient { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(ellipse at top, rgba(201, 169, 98, 0.1) 0%, transparent 70%); animation: footerGlow 15s ease-in-out infinite; }
+    @keyframes footerGlow { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+    .footer-content { position: relative; z-index: 2; max-width: 1400px; margin: 0 auto; }
+    .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 80px; }
+    .footer-brand .logo { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 600; color: var(--gold); text-decoration: none; display: block; margin-bottom: 20px; opacity: 1; transform: none; }
+    .footer-brand p { font-size: 15px; font-weight: 300; line-height: 1.8; color: var(--soft-white); }
+    .footer-column h4 { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 500; margin-bottom: 25px; color: var(--gold); }
+    .footer-column ul { list-style: none; }
+    .footer-column ul li { margin-bottom: 15px; }
+    .footer-column ul li a { color: var(--soft-white); text-decoration: none; font-size: 14px; font-weight: 300; transition: color 0.3s ease; }
+    .footer-column ul li a:hover { color: var(--gold); }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 40px; border-top: 1px solid rgba(201, 169, 98, 0.2); }
+    .footer-copyright { font-size: 14px; font-weight: 300; color: var(--soft-white); }
+    .footer-social { display: flex; gap: 20px; }
+    .footer-social a { width: 45px; height: 45px; border: 1px solid rgba(201, 169, 98, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--gold); text-decoration: none; font-size: 18px; transition: all 0.3s ease; }
+    .footer-social a:hover { background: var(--gold); color: var(--black); box-shadow: 0 0 30px rgba(201, 169, 98, 0.5); }
+    .scroll-progress { position: fixed; top: 0; left: 0; height: 2px; background: var(--gold); z-index: 10000; width: 0%; transition: width 0.1s ease-out; }
+    @media (max-width: 1024px) { .about, .airport-content, .vision-mission { grid-template-columns: 1fr; } .gallery-grid { grid-template-columns: repeat(2, 1fr); } .footer-top { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 768px) { .header { padding: 15px 20px; } .nav-menu { display: none; } .services, .faq, .gallery, .testimonials, .why-choose { padding: 80px 20px; } .services-grid, .why-choose-grid { grid-template-columns: 1fr; } .gallery-grid { grid-template-columns: 1fr; } .footer-top { grid-template-columns: 1fr; } .footer-bottom { flex-direction: column; gap: 20px; } }
+  </style>
+</head>
+<body>
+  <div class="cursor"></div>
+  <div class="scroll-progress"></div>
+  <header class="header">
+    <a href="#" class="logo">LUXE LIMO</a>
+    <ul class="nav-menu">
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#fleet">Fleet</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </header>
+  <section class="hero" id="home">
+    <div class="hero-bg" id="hero-bg"></div>
+    <div class="hero-content">
+      <h1 class="hero-title"></h1>
+      <p class="hero-subtitle">Premium Chauffeur Experience</p>
+      <a href="#services" class="hero-cta">Explore Services</a>
+    </div>
+    <div class="hero-car-container">
+      <img src="https://images.unsplash.com/photo-1619767886558-efdc259cde1a?w=1200&h=600&fit=crop" alt="Luxury Car" class="hero-car" id="hero-car">
+    </div>
+  </section>
+  <section class="about" id="about">
+    <div class="about-image"><img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&h=1000&fit=crop" alt="Luxury Interior"></div>
+    <div class="about-content">
+      <span class="section-label">Who We Are</span>
+      <h2 class="about-title">Redefining Luxury Transportation</h2>
+      <p class="about-text">For over two decades, we have been the premier choice for discerning clients who demand excellence. Our fleet of meticulously maintained vehicles and our team of professional chauffeurs ensure every journey is an experience to remember.</p>
+      <a href="#contact" class="hero-cta">Learn More</a>
+    </div>
+  </section>
+  <section class="wedding" id="wedding">
+    <div class="wedding-petals" id="wedding-petals"></div>
+    <div class="wedding-content">
+      <span class="wedding-icon">💍</span>
+      <h2 class="wedding-title">Wedding Services</h2>
+      <p class="wedding-text">Make your special day unforgettable with our elegant wedding transportation. From classic Rolls-Royce to modern luxury sedans, we provide the perfect arrival for your fairytale beginning.</p>
+    </div>
+  </section>
+  <section class="services" id="services">
+    <div class="services-header">
+      <span class="section-label">What We Offer</span>
+      <h2 class="services-title">Our Services</h2>
+    </div>
+    <div class="services-grid">
+      <div class="service-card"><span class="service-icon">✈️</span><h3 class="service-title">Airport Transfers</h3><p class="service-description">Punctual and comfortable airport transportation with flight tracking and meet-and-greet services.</p></div>
+      <div class="service-card"><span class="service-icon">🏢</span><h3 class="service-title">Corporate Travel</h3><p class="service-description">Professional executive transportation for business meetings, conferences, and corporate events.</p></div>
+      <div class="service-card"><span class="service-icon">💍</span><h3 class="service-title">Wedding Transport</h3><p class="service-description">Elegant vehicles and red carpet service to make your wedding day truly magical.</p></div>
+      <div class="service-card"><span class="service-icon">🌃</span><h3 class="service-title">Night Out</h3><p class="service-description">Safe and stylish transportation for evenings out, ensuring you enjoy every moment.</p></div>
+      <div class="service-card"><span class="service-icon">🎭</span><h3 class="service-title">Special Events</h3><p class="service-description">Customized transportation solutions for galas, premieres, and exclusive events.</p></div>
+      <div class="service-card"><span class="service-icon">🏛️</span><h3 class="service-title">City Tours</h3><p class="service-description">Discover the city in ultimate comfort with our guided luxury tour experiences.</p></div>
+    </div>
+  </section>
+  <section class="experience-3d" id="fleet">
+    <div id="webgl-container"></div>
+    <div class="experience-overlay">
+      <span class="section-label">The Fleet</span>
+      <h2 class="experience-title">Experience Excellence</h2>
+      <p class="experience-text">Interact with our premium 2025 Toyota Camry Ascent. Scroll to explore every detail of automotive perfection.</p>
+    </div>
+  </section>
+  <section class="airport" id="airport">
+    <div class="airport-bg"></div>
+    <div class="airport-content">
+      <div class="airport-text-block">
+        <span class="section-label">Airport Shuttle</span>
+        <h2>Seamless Airport Transfers</h2>
+        <p>Experience stress-free airport transportation with our professional chauffeur service. Real-time flight monitoring ensures we're there when you land, regardless of delays.</p>
+      </div>
+      <div class="airport-image"><img src="https://images.unsplash.com/photo-1464037866556-6812c9d1c72e?w=800&h=600&fit=crop" alt="Airport"></div>
+    </div>
+  </section>
+  <section class="faq" id="faq">
+    <div class="faq-header">
+      <span class="section-label">Information</span>
+      <h2 class="faq-title">Frequently Asked Questions</h2>
+    </div>
+    <div class="faq-container">
+      <div class="faq-item"><div class="faq-question"><h3>How far in advance should I book?</h3><span class="faq-icon">+</span></div><div class="faq-answer"><p>We recommend booking at least 24 hours in advance for standard services. For special events and weddings, we suggest booking 2-4 weeks ahead to ensure availability of your preferred vehicle.</p></div></div>
+      <div class="faq-item"><div class="faq-question"><h3>What happens if my flight is delayed?</h3><span class="faq-icon">+</span></div><div class="faq-answer"><p>We monitor all flights in real-time. If your flight is delayed, we automatically adjust your pickup time at no additional charge. Your chauffeur will be waiting when you arrive.</p></div></div>
+      <div class="faq-item"><div class="faq-question"><h3>Are your chauffeurs professionally trained?</h3><span class="faq-icon">+</span></div><div class="faq-answer"><p>All our chauffeurs undergo rigorous background checks, professional driving training, and customer service certification. They are licensed, insured, and committed to providing exceptional service.</p></div></div>
+      <div class="faq-item"><div class="faq-question"><h3>Can I request specific amenities?</h3><span class="faq-icon">+</span></div><div class="faq-answer"><p>Absolutely. We offer customizable amenities including beverages, newspapers, child seats, and more. Simply let us know your preferences when booking.</p></div></div>
+      <div class="faq-item"><div class="faq-question"><h3>What is your cancellation policy?</h3><span class="faq-icon">+</span></div><div class="faq-answer"><p>Cancellations made more than 24 hours before scheduled service receive a full refund. Cancellations within 24 hours may incur a fee depending on the service type.</p></div></div>
+    </div>
+  </section>
+  <section class="gallery" id="gallery">
+    <div class="gallery-header">
+      <span class="section-label">Portfolio</span>
+      <h2 class="gallery-title">Photo Gallery</h2>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1563720223185-11003d516935?w=600&h=450&fit=crop" alt="Luxury Car"><div class="gallery-overlay"><span>View</span></div></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1552519507-cf0d5a6e5d0d?w=600&h=800&fit=crop" alt="Interior"><div class="gallery-overlay"><span>View</span></div></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1542282088-fe8426682b8f?w=600&h=450&fit=crop" alt="Car Detail"><div class="gallery-overlay"><span>View</span></div></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&h=450&fit=crop" alt="Night Drive"><div class="gallery-overlay"><span>View</span></div></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=600&h=800&fit=crop" alt="Luxury Sedan"><div class="gallery-overlay"><span>View</span></div></div>
+      <div class="gallery-item"><img src="https://images.unsplash.com/photo-1550355291-bbee04a92027?w=600&h=450&fit=crop" alt="Chauffeur"><div class="gallery-overlay"><span>View</span></div></div>
+    </div>
+  </section>
+  <section class="testimonials" id="testimonials">
+    <div class="testimonials-bg"></div>
+    <div class="testimonials-content">
+      <div class="testimonials-header">
+        <span class="section-label">Testimonials</span>
+        <h2 class="testimonials-title">Client Stories</h2>
+      </div>
+      <div class="testimonials-carousel">
+        <div class="testimonial-card"><div class="testimonial-stars">★★★★★</div><p class="testimonial-text">"Absolutely impeccable service from start to finish. Our wedding day was made even more special by the beautiful car and professional chauffeur."</p><div class="testimonial-author"><div class="testimonial-avatar"></div><span class="testimonial-name">Sarah & James</span></div></div>
+        <div class="testimonial-card"><div class="testimonial-stars">★★★★★</div><p class="testimonial-text">"I use Luxe Limo for all my business travel. Punctual, professional, and always a pleasure. The cars are immaculate."</p><div class="testimonial-author"><div class="testimonial-avatar"></div><span class="testimonial-name">Michael Chen</span></div></div>
+        <div class="testimonial-card"><div class="testimonial-stars">★★★★★</div><p class="testimonial-text">"The best limousine service in the city. They exceeded all expectations for our anniversary celebration."</p><div class="testimonial-author"><div class="testimonial-avatar"></div><span class="testimonial-name">Emily Rodriguez</span></div></div>
+      </div>
+    </div>
+  </section>
+  <section class="why-choose" id="why">
+    <div class="why-choose-bg"></div>
+    <div class="why-choose-header">
+      <span class="section-label">Advantages</span>
+      <h2 class="why-choose-title">Why Choose Us</h2>
+    </div>
+    <div class="why-choose-grid">
+      <div class="why-item"><span class="why-icon">🏆</span><h3 class="why-title">Award Winning</h3><p class="why-text">Recognized excellence in luxury transportation services for 15 consecutive years.</p></div>
+      <div class="why-item"><span class="why-icon">🛡️</span><h3 class="why-title">Fully Insured</h3><p class="why-text">Complete peace of mind with comprehensive insurance coverage on all journeys.</p></div>
+      <div class="why-item"><span class="why-icon">⏰</span><h3 class="why-title">24/7 Support</h3><p class="why-text">Round-the-clock customer service to assist with any changes or requests.</p></div>
+      <div class="why-item"><span class="why-icon">🚗</span><h3 class="why-title">Premium Fleet</h3><p class="why-text">Latest model vehicles maintained to the highest standards of cleanliness and comfort.</p></div>
+      <div class="why-item"><span class="why-icon">👔</span><h3 class="why-title">Expert Chauffeurs</h3><p class="why-text">Professionally trained drivers with extensive knowledge and impeccable manners.</p></div>
+      <div class="why-item"><span class="why-icon">💎</span><h3 class="why-title">VIP Treatment</h3><p class="why-text">Every client receives personalized attention and white-glove service.</p></div>
+    </div>
+  </section>
+  <section class="vision-mission" id="vision">
+    <div class="vision-section">
+      <div class="vm-particles" id="vision-particles"></div>
+      <span class="vm-label">Our Vision</span>
+      <h2 class="vm-title">Setting the Standard</h2>
+      <p class="vm-text">To be the world's most trusted luxury transportation company, known for unparalleled service, safety, and sophistication. We envision a future where every journey is not just a trip, but a memorable experience that exceeds expectations.</p>
+    </div>
+    <div class="mission-section">
+      <div class="vm-particles" id="mission-particles"></div>
+      <span class="vm-label">Our Mission</span>
+      <h2 class="vm-title">Excellence in Motion</h2>
+      <p class="vm-text">Our mission is to provide exceptional transportation experiences through our commitment to safety, reliability, and luxury. We strive to exceed expectations with every ride, building lasting relationships with clients who value quality and professionalism.</p>
+    </div>
+  </section>
+  <footer class="footer" id="contact">
+    <div class="footer-gradient"></div>
+    <div class="footer-content">
+      <div class="footer-top">
+        <div class="footer-brand"><a href="#" class="logo">LUXE LIMO</a><p>Experience the pinnacle of luxury transportation. Where every journey becomes a cherished memory.</p></div>
+        <div class="footer-column"><h4>Services</h4><ul><li><a href="#">Airport Transfers</a></li><li><a href="#">Corporate Travel</a></li><li><a href="#">Wedding Transport</a></li><li><a href="#">Special Events</a></li></ul></div>
+        <div class="footer-column"><h4>Company</h4><ul><li><a href="#">About Us</a></li><li><a href="#">Our Fleet</a></li><li><a href="#">Careers</a></li><li><a href="#">Press</a></li></ul></div>
+        <div class="footer-column"><h4>Contact</h4><ul><li><a href="#">+1 (555) 123-4567</a></li><li><a href="#">info@luxelimo.com</a></li><li><a href="#">123 Luxury Lane</a></li><li><a href="#">Beverly Hills, CA</a></li></ul></div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copyright">© 2025 Luxe Limo. All rights reserved.</p>
+        <div class="footer-social"><a href="#">𝕏</a><a href="#">f</a><a href="#">in</a><a href="#">📷</a></div>
+      </div>
+    </div>
+  </footer>
+  <script type="module" src="/main.js"></script>
+</body>
+</html>
